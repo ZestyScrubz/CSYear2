@@ -1,4 +1,11 @@
-
+/* 
+This class stores information about the tiles placed on the game-board and implements support
+methods needed by the algorithm that plays the game.
+Student Name: Isaac Tran
+Student email: itran9@uwo.ca
+Student ID: 251446564
+Due Date: 2025-10-14
+*/
 
 public class Board implements BoardADT{
 
@@ -182,6 +189,7 @@ public class Board implements BoardADT{
                 }
             }
 
+            // if there are no adjacent tile of the symbol then result in a draw
             return true;
         }
 
@@ -196,10 +204,10 @@ public class Board implements BoardADT{
 
     /* Private Helper Method */
 
-    /*** 
+    /** 
     Given the tile, check all the adjecent tiles if its the same symbol
     @return true is there is an adjacent tile of the symbol, false otherwise
-    ***/ 
+    **/ 
 
     private boolean hasAdjacentType(int row, int col, char symbol) {
 
@@ -221,6 +229,7 @@ public class Board implements BoardADT{
 
     }
 
+    // Turn the board into a string representation by going down the columns
     private String boardToString() {
         String result = "";
 

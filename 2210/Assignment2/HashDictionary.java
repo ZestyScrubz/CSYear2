@@ -1,3 +1,11 @@
+/* 
+This class implements a dictionary using a hash table with separate chaining.
+Student Name: Isaac Tran
+Student email: itran9@uwo.ca
+Student ID: 251446564
+Due Date: 2025-10-14
+*/
+
 import java.util.LinkedList;
 
 public class HashDictionary implements DictionaryADT {
@@ -6,7 +14,7 @@ public class HashDictionary implements DictionaryADT {
     private final LinkedList<Layout>[] table;
     int size;
 
-
+    // this initializes a dictionary with an empty hash table of the specified size
     public HashDictionary(int size) {
         this.size = size;
         table = new LinkedList[size];
@@ -14,10 +22,15 @@ public class HashDictionary implements DictionaryADT {
         for (int i = 0; i < size; i++) table[i] = new LinkedList<>();
     }
 
-    /* Hash function that directly casts the char to an int. In Java, char values are represented by their corresponding Unicode integer values, so this directly provides a unique integer for each character. */
+    /* Converts a string key into an integer index for the hash table
+     * Uses prime multiplier for fewer colision
+     * 
+     */
     private int hash(String key) {
         int hash = 0;
         int prime = 33; // or 31, both are good choices
+
+        // polynomial hash code
         for (int i = 0; i < key.length(); i++) {
             hash = (prime * hash + key.charAt(i)) % size;
         }
