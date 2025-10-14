@@ -1,8 +1,7 @@
 import java.awt.*;
 import java.awt.event.*;
-import javax.swing.*;
-import java.io.*;
 import java.util.*;
+import javax.swing.*;
 
 public class PlayGame extends JFrame {
 	private final char COMPUTER = 'R';
@@ -65,22 +64,22 @@ public class PlayGame extends JFrame {
 	public static void main(String [] args)
 	/* -------------------------------------------- */
 	{
-		/* Check that the number of arguments is the correct one */
-		if (args.length != 3) {
-			System.out.println
-			("Usage: java PlayGame board-size empty-positions depth");
-			System.exit(0);
-		}
+		// /* Check that the number of arguments is the correct one */
+		// if (args.length != 3) {
+		// 	System.out.println
+		// 	("Usage: java PlayGame board-size empty-positions depth");   
+		// 	System.exit(0);
+		// }
 
 		/* Size of the game board */
-		int size = Integer.parseInt(args[0]);
+		int size = Integer.parseInt("5");
 
 		/* Number of positions on the boart that must remain empty */
-		int empty = Integer.parseInt(args[1]);
+		int empty = Integer.parseInt("1");
 
 		/* Number of positions marked by the same player in the same row, 
 	   column, or diagonal, required to win */
-		int depth = Integer.parseInt(args[2]);
+		int depth = Integer.parseInt("2");
 
 		/* Create the game board and start the game */
 		JFrame f = new PlayGame(size,empty,depth);
