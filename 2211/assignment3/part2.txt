@@ -1,0 +1,11 @@
+1. Files:
+    1. We can use dir, since it displace all the content in the current direction
+        We can also use echo *. The "*" matches all non-hidden files and directories in the current directory and echo prints that list to the terminal
+    2. The option -i is used prompt before every removal, for directories, we can use the recursive option -r
+        To ensure we are not prompted we can use -f which ignores nonexistent files and arguments, never prompt, and addtionally we can add -r for directories
+        The -f option takes precedence, so we will not be prompted when removing
+    3. The primary purpose of mv is to move files or directories from one location to another, or remanes them. While the main purpose of rename is to rename
+        multiple files using pattern matching.
+        mv cannot rename multiple files while rename can. rename cannot moves files between directories while mv can. mv does not use pattern-based renaming
+    4. In this context, ELF stands for "Executable and Linkable Format", which is a standrd file format used for executable, object code, shared libraries, and core dumps on Unix-like systems
+        Not DONE

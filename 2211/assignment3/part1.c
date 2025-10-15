@@ -26,23 +26,38 @@ int main(void) {
     // start at index 0 and iterate up to the last index
     printf("Part 1:\n\tYour array is: ");
     for (int i = 0; i < arraySize; i++) {
-        printf("[%d] = %d, ", i, intArray[i]);
+        if (i == arraySize - 1) {
+            printf("[%d] = %d", i, intArray[i]);
+        } else {
+            printf("[%d] = %d, ", i, intArray[i]);
+        }
     }
     printf("\n");
 
     // start at the last index of the array and iterate down to 0
     printf("Part 2:\n\tYour array in reverse is: ");
     for (int i = arraySize - 1; i >= 0; i--) {
-        printf("[%d] = %d, ", i, intArray[i]);
+        if (i == 0) {
+            printf("[%d] = %d", i, intArray[i]);
+        } else {
+            printf("[%d] = %d, ", i, intArray[i]);
+        }
     }
     printf("\n");
 
     // loop through array and take the mod of the value and print even
     printf("Part 3:\n\tThe even elements in the array is: ");
     for (int i = 0; i < arraySize; i++) {
-        if (intArray[i] % 2 == 0) {
-            printf("[%d] = %d, ", i, intArray[i]);
+        if (i == arraySize - 1) {
+            if (intArray[i] % 2 == 0) {
+                printf("[%d] = %d", i, intArray[i]);
+            }
+        } else {
+            if (intArray[i] % 2 == 0) {
+                printf("[%d] = %d, ", i, intArray[i]);
+            }  
         }
+
         
     }
     printf("\n");
@@ -56,32 +71,53 @@ int main(void) {
     printf("%d", sum);
     printf("\n");
 
-    // find the smallest number
+    
     printf("Part 5:\n\tYour array in sorted order is: ");
-    int smallest = intArray[0]; // make the smallest number the first index so we can compare
-    for (int i = 0; i < arraySize; i++) {
-        if (intArray[i] < smallest) {
-            smallest = i;
-        }
-    }
-    printf("[%d] = %d, ", smallest, intArray[smallest]);
-    // find the next smallest number
-    for (int i = 0; i < arraySize - 1; i++) {
-        for (int j = 0; j < arraySize; j++) {
-            if (intArray[j] < smallest) {
+    int tempArray[numProcess];
 
+    for (int i = 0; i < arraySize; i++) {
+        tempArray[i] = intArray[i];
+    }
+
+    // Sort the array using a simple selection sort algorithm
+    int tempNum;
+    for (int i = 0; i < arraySize - 1; i++) {
+        for (int j = i + 1; j < arraySize; j++) {
+            if (tempArray[j] < tempArray[i]) {
+                // Swap the elements
+                tempNum = tempArray[i];
+                tempArray[i] = tempArray[j];
+                tempArray[j] = tempNum;
             }
         }
     }
+
+    // loop through int array and compare with temp array if they are the same then print
+    for (int i = 0; i < arraySize; i++) {
+        for (int j = 0; j < arraySize; j++) {
+            if (i == arraySize - 1){
+                if (intArray[j] == tempArray[i]) {
+                    printf("[%d] = %d", j, intArray[j]);
+                    break;
+                }
+            } else {
+                if (intArray[j] == tempArray[i]) {
+                    printf("[%d] = %d, ", j, intArray[j]);
+                    break;
+                }
+            }
+        }
+    }
+
     printf("\n");
 
     // switch first and last array
-    printf("Part 6:\n\tYYour array with first and last element switched is: ");
+    printf("Part 6:\n\tYour array with first and last element switched is: ");
     // print the last array, first
-    printf("[%d] = %d,", arraySize - 1, intArray[arraySize - 1]);
+    printf("[%d] = %d, ", arraySize - 1, intArray[arraySize - 1]);
     // print array starting at the second
     for (int i = 1; i < arraySize - 1; i++) {
-        printf("[%d] = %d", i, intArray[i]);
+        printf("[%d] = %d, ", i, intArray[i]);
     }
     // print first array, last
     printf("[0] = %d", intArray[0]);
