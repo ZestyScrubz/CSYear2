@@ -1,3 +1,11 @@
+/** 
+ * 2211 Computer Science Assignment 3
+ * Student Name: Isaac Tran
+ * Student Email: itran9@uwo.ca
+ * Student ID: 251446564
+ * Due Date: 2025-10-21
+**/
+
 #include <stdio.h>
 
 int main(void) {
@@ -15,7 +23,7 @@ int main(void) {
     int intArray[numProcess];
 
     printf("There is enough room in your array for %d integers (%d bytes)", numProcess, sizeof(intArray));
-    printf("\nPlease enter your integers separeated by space: ");
+    printf("\nPlease enter your integers separated by space: ");
     
     int arraySize = sizeof(intArray) / sizeof(intArray[0]);
 

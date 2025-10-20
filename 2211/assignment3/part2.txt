@@ -7,5 +7,21 @@
     3. The primary purpose of mv is to move files or directories from one location to another, or remanes them. While the main purpose of rename is to rename
         multiple files using pattern matching.
         mv cannot rename multiple files while rename can. rename cannot moves files between directories while mv can. mv does not use pattern-based renaming
-    4. In this context, ELF stands for "Executable and Linkable Format", which is a standrd file format used for executable, object code, shared libraries, and core dumps on Unix-like systems
-        Not DONE
+    4. In this context, ELF stands for "Executable and Linkable Format", which is a standrd file format used on linux based systems
+    5. ls -l returns the logical file size while du returns the how much disk space the file is occupying.
+
+2. Directories:
+    1. By running the command "mkdir -p grandparent/parent/child" allowd us to do the same. This -p means parents and it allows us to create directories without having to create them beforehand.
+    2. You can create and remove directories with space by surrounding the name in quotaion mark. Ex: mkdir "My Dictory"
+    3. We can do, "mkdir -m 500 dirName", where -m means mode and 5 in binary is 101. This will help us avoid using chmod.
+    4. You can use "cd -", which will undo the last directory change. Or maybe you might want to use cd ../../..
+    5. Use "dirs -v" where 0v means verbose. We will be able to see the index of each directory and by using "cd +5" we can quickly go to 5 directories ahead (6th dir since it starts at 0)
+
+3. Permissions:
+    1. We use the verbose options to show changes "chmod -v (permissions) (filename)" or "chmod --verbose (permission) (filename)"
+    2. We use "chown --reference=<filename1> <filename2>" where file1's permission gets copied onto file2
+    3. To see file permissions, user ownership, and group ownership only using the stat command, you can use "stat -c "%A %U %G <filename>", 
+       A are the permissions, U is the user, and G is the group
+    4. First we need to give the group write permission on the file, we do this by using "chmod g+w <filename>".
+        Then we need to remove directory write permission by using "chmod g-w <directory>"
+    5. By omitting u/g/o/a in the chmod command, you apply +x (the permission to exectue) to all, which is the default.
