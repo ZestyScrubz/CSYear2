@@ -5,8 +5,8 @@ public class Layout {
     will be used as the key attribute for every Layout object.
      */
 
-    String boardLayout;
-    int score;
+    String boardLayout; // "RRBEEREBB"
+    int score; // 0, 1, 2, 3
 
     public Layout(String boardLayout, int score) {
         this.boardLayout = boardLayout;

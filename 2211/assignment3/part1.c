@@ -12,6 +12,7 @@ int main(void) {
     
     int numProcess;
 
+    // Prompt the user
     printf("Enter the number of integer to process: ");
     scanf("%d", &numProcess);
 
@@ -25,48 +26,43 @@ int main(void) {
     printf("There is enough room in your array for %d integers (%d bytes)", numProcess, sizeof(intArray));
     printf("\nPlease enter your integers separated by space: ");
     
+    // Store the array size value
     int arraySize = sizeof(intArray) / sizeof(intArray[0]);
 
+    // Store each value into the array
     for (int i = 0; i < arraySize; i++) {
         scanf("%d", &intArray[i]);
     }
 
     // start at index 0 and iterate up to the last index
     printf("Part 1:\n\tYour array is: ");
+    int firstPrinted = 1; // skip the first ","
     for (int i = 0; i < arraySize; i++) {
-        if (i == arraySize - 1) {
-            printf("[%d] = %d", i, intArray[i]);
-        } else {
-            printf("[%d] = %d, ", i, intArray[i]);
-        }
+        if (!firstPrinted) printf(", ");
+        printf("[%d] = %d", i, intArray[i]);
+        firstPrinted = 0;
     }
     printf("\n");
 
     // start at the last index of the array and iterate down to 0
     printf("Part 2:\n\tYour array in reverse is: ");
+    firstPrinted = 1;
     for (int i = arraySize - 1; i >= 0; i--) {
-        if (i == 0) {
-            printf("[%d] = %d", i, intArray[i]);
-        } else {
-            printf("[%d] = %d, ", i, intArray[i]);
-        }
+        if (!firstPrinted) printf(", ");
+        printf("[%d] = %d", i, intArray[i]);
+        firstPrinted = 0;
     }
     printf("\n");
 
     // loop through array and take the mod of the value and print even
     printf("Part 3:\n\tThe even elements in the array is: ");
+    firstPrinted = 1;
     for (int i = 0; i < arraySize; i++) {
-        if (i == arraySize - 1) {
-            if (intArray[i] % 2 == 0) {
-                printf("[%d] = %d", i, intArray[i]);
-            }
-        } else {
-            if (intArray[i] % 2 == 0) {
-                printf("[%d] = %d, ", i, intArray[i]);
-            }  
+        if (intArray[i] % 2 == 0) {
+            if (!firstPrinted) printf(", "); // we skip printing the first "," and print a "," before every print
+            printf("[%d] = %d", i, intArray[i]);
+            firstPrinted = 0;
         }
-
-        
     }
     printf("\n");
 
@@ -83,6 +79,7 @@ int main(void) {
     printf("Part 5:\n\tYour array in sorted order is: ");
     int tempArray[numProcess];
 
+    // copy the main array in a temp array
     for (int i = 0; i < arraySize; i++) {
         tempArray[i] = intArray[i];
     }
