@@ -8,12 +8,12 @@ public class MultimediaItem {
      * 2: if content is the name of an audio file
      * 3: if content is the name of an image file
      * 4: if content is the name of an html document.
-    */
+     */
 
     /**
      * creates a new MultimediaItem object
      * whose instance variables have the values specified by the parameters.
-    */
+     */
     public MultimediaItem(String newContent, int newType) {
         content = newContent;
         type = newType;
@@ -30,7 +30,7 @@ public class MultimediaItem {
      * @return the type of this node
      */
     public int getType() {
-       return type; 
+        return type;
     }
 
 }

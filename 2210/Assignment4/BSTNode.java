@@ -5,7 +5,6 @@ public class BSTNode {
     BSTNode rightChild;
     Data data;
 
-
     public BSTNode() {
         parent = null;
         leftChild = null;
@@ -20,7 +19,7 @@ public class BSTNode {
     }
 
     /*** Getter methods ***/
-    
+
     public BSTNode getParent() {
         return parent;
     }
@@ -47,7 +46,7 @@ public class BSTNode {
         leftChild = newLeftChild;
     }
 
-    public void setRightChild(BSTNode newRightChild){ 
+    public void setRightChild(BSTNode newRightChild) {
         rightChild = newRightChild;
     }
 
@@ -58,5 +57,5 @@ public class BSTNode {
     boolean isLeaf() {
         return (leftChild == null && rightChild == null);
     }
-    
+
 }

@@ -5,7 +5,9 @@ public class Data {
     ArrayList<MultimediaItem> media;
 
     /**
-     * creates a new Data object with the given key attribute and an empty media list.
+     * creates a new Data object with the given key attribute and an empty media
+     * list.
+     * 
      * @param newName the key attribute
      */
     public Data(String newName) {
@@ -21,7 +23,7 @@ public class Data {
      * @return the name of attribute of this object
      */
     public String getName() {
-        return this.name;
+        return name;
     }
 
     /**
@@ -30,6 +32,5 @@ public class Data {
     public ArrayList<MultimediaItem> getMedia() {
         return media;
     }
-
 
 }
