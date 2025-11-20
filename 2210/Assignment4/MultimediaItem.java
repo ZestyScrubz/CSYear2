@@ -1,7 +1,7 @@
 public class MultimediaItem {
     // Instance variables
-    String content;
-    int type;
+    private String content;
+    private int type;
 
     /*
      * 1: if content is text

@@ -1,9 +1,9 @@
 public class BSTNode {
 
-    BSTNode parent;
-    BSTNode leftChild;
-    BSTNode rightChild;
-    Data data;
+    private BSTNode parent;
+    private BSTNode leftChild;
+    private BSTNode rightChild;
+    private Data data;
 
     public BSTNode() {
         parent = null;
@@ -55,8 +55,8 @@ public class BSTNode {
         data = newData;
     }
 
-    boolean isLeaf() {
-        return (leftChild == null && rightChild == null || data == null);
+    public boolean isLeaf() {
+        return data == null;
     }
 
 }

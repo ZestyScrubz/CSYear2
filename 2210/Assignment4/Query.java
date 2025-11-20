@@ -19,7 +19,9 @@ public class Query {
         Query myProgram = new Query(args[0]); // pass the filename
 
         while (true) {
-            nextCommand = keyboard.read("Enter next command: ").trim();
+            String raw = keyboard.read("Enter next command: ");
+            if (raw == null) break;
+            nextCommand = raw.trim();
             if (nextCommand.equalsIgnoreCase("end")) {
                 break;
             }
@@ -45,19 +47,16 @@ public class Query {
                 String key = keyLine.toLowerCase();
 
                 int type = 1;
-                if (!contentLine.contains(" ") && contentLine.contains(".")) {
-                    String ext = contentLine.substring(contentLine.lastIndexOf('.') + 1).toLowerCase();
-                    switch (ext) {
-                        case "wav":
-                        case "mid":
-                            type = 2; break;
-                        case "jpg":
-                        case "gif":
-                            type = 3; break;
-                        case "html":
-                            type = 4; break;
-                        default:
-                            type = 1; break;
+                String lowContent = contentLine.toLowerCase();
+                if (!lowContent.contains(" ") && lowContent.contains(".")) {
+                    if (lowContent.endsWith(".wav") || lowContent.endsWith(".mid")) {
+                        type = 2;
+                    } else if (lowContent.endsWith(".jpg") || lowContent.endsWith(".gif")) {
+                        type = 3;
+                    } else if (lowContent.endsWith(".html")) {
+                        type = 4;
+                    } else {
+                        type = 1;
                     }
                 }
 
@@ -82,14 +81,14 @@ public class Query {
                     if (tokens.length < 2) return "Invalid command";
                     String key = tokens[1].toLowerCase();
                     ArrayList<MultimediaItem> items = dictionary.get(dictionary.getRoot(), key);
-                    StringBuilder sb = new StringBuilder();
+                    ArrayList<String> lines = new ArrayList<>();
 
                     if (items != null && !items.isEmpty()) {
                         for (MultimediaItem item : items) {
                             try {
                                 switch (item.getType()) {
                                     case 1:
-                                        sb.append(item.getContent()).append("\n");
+                                        lines.add(item.getContent());
                                         break;
                                     case 2:
                                         new SoundPlayer().play(item.getContent());
@@ -102,11 +101,10 @@ public class Query {
                                         break;
                                 }
                             } catch (MultimediaException e) {
-                                sb.append("Cannot display/play: ").append(item.getContent()).append("\n");
+                                lines.add("Cannot display/play: " + item.getContent());
                             }
                         }
-                        if (sb.length() > 0 && sb.charAt(sb.length() - 1) == '\n') sb.setLength(sb.length() - 1);
-                        return sb.toString();
+                        return String.join("\n", lines);
                     } else {
                         String s = "The word " + key + " is not in the ordered dictionary.\n";
                         Data pred = dictionary.predecessor(dictionary.getRoot(), key);
@@ -146,12 +144,10 @@ public class Query {
                     } catch (NumberFormatException e) {
                         return "Invalid type value: " + tokens[tokens.length - 1];
                     }
-                    StringBuilder sb = new StringBuilder();
-                    for (int i = 2; i < tokens.length - 1; i++) {
-                        if (i > 2) sb.append(" ");
-                        sb.append(tokens[i]);
+                    String content = tokens[2];
+                    for (int i = 3; i < tokens.length - 1; i++) {
+                        content = content + " " + tokens[i];
                     }
-                    String content = sb.toString();
                     dictionary.put(dictionary.getRoot(), key, content, type);
                     return "";
                 }
@@ -235,7 +231,7 @@ public class Query {
                     return "Invalid command";
             }
         } catch (DictionaryException e) {
-            return "No record in the ordered dictionary has key " + (tokens.length > 1 ? tokens[1] : "") + ".";
+            return "No record in the ordered dictionary has key " + (tokens.length > 1 ? tokens[1].toLowerCase() : "") + ".";
         }
     }
 }

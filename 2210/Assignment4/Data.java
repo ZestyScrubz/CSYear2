@@ -1,8 +1,8 @@
 import java.util.ArrayList;
 
 public class Data {
-    String name;
-    ArrayList<MultimediaItem> media;
+    private String name;
+    private ArrayList<MultimediaItem> media;
 
     /**
      * creates a new Data object with the given key attribute and an empty media

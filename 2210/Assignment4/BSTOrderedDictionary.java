@@ -59,7 +59,12 @@ public class BSTOrderedDictionary implements BSTOrderedDictionaryADT {
         // search through the tree to find where the root is
         if (r.isLeaf()) {
             // tree is empty, insert new node here
-            BSTNode newNode = new BSTNode(null, new BSTNode(), new BSTNode(), newData);
+            BSTNode leftLeaf = new BSTNode();
+            BSTNode rightLeaf = new BSTNode();
+            BSTNode newNode = new BSTNode(null, leftLeaf, rightLeaf, newData);
+            // set leaf parents
+            leftLeaf.setParent(newNode);
+            rightLeaf.setParent(newNode);
             newNode.getData().add(newItem);
             root = newNode;
             numInternalNodes++;
@@ -74,7 +79,11 @@ public class BSTOrderedDictionary implements BSTOrderedDictionaryADT {
                 // if the key is smaller than the root, go left
                 if (r.getLeftChild().isLeaf()) {
                     // if the left child is a leaf, insert new node here
-                    BSTNode newNode = new BSTNode(r, new BSTNode(), new BSTNode(), newData);
+                    BSTNode leftLeaf = new BSTNode();
+                    BSTNode rightLeaf = new BSTNode();
+                    BSTNode newNode = new BSTNode(r, leftLeaf, rightLeaf, newData);
+                    leftLeaf.setParent(newNode);
+                    rightLeaf.setParent(newNode);
                     newNode.getData().add(newItem);
                     r.setLeftChild(newNode);
                     numInternalNodes++;
@@ -85,7 +94,11 @@ public class BSTOrderedDictionary implements BSTOrderedDictionaryADT {
                 // if the key is larger than the root, go right
                 if (r.getRightChild().isLeaf()) {
                     // if the right child is a leaf, insert new node here
-                    BSTNode newNode = new BSTNode(r, new BSTNode(), new BSTNode(), newData);
+                    BSTNode leftLeaf = new BSTNode();
+                    BSTNode rightLeaf = new BSTNode();
+                    BSTNode newNode = new BSTNode(r, leftLeaf, rightLeaf, newData);
+                    leftLeaf.setParent(newNode);
+                    rightLeaf.setParent(newNode);
                     newNode.getData().add(newItem);
                     r.setRightChild(newNode);
                     numInternalNodes++;
