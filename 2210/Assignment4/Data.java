@@ -11,6 +11,7 @@ public class Data {
      * @param newName the key attribute
      */
     public Data(String newName) {
+        this.name = newName;
         media = new ArrayList<MultimediaItem>();
     }
 

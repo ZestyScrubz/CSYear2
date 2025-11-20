@@ -1,4 +1,3 @@
-
 import java.util.ArrayList;
 
 public class BSTOrderedDictionary implements BSTOrderedDictionaryADT {
@@ -55,17 +54,47 @@ public class BSTOrderedDictionary implements BSTOrderedDictionaryADT {
         // create a new node object with key and content and type
         Data newData = new Data(key);
         MultimediaItem newItem = new MultimediaItem(content, type);
-        ArrayList<MultimediaItem> p = get(r, key);
 
         // if there exists a node with key, add new multimediaitem with content and type
         // search through the tree to find where the root is
-        if (p != null) {
-            get(r, key).add(newItem); // getting the arraylist with the root r and the key
-        } else {
-            BSTNode newNode = new BSTNode(r);
-            newData.add(newItem);
+        if (r.isLeaf()) {
+            // tree is empty, insert new node here
+            BSTNode newNode = new BSTNode(null, new BSTNode(), new BSTNode(), newData);
+            newNode.getData().add(newItem);
+            root = newNode;
             numInternalNodes++;
+        } else {
+
+            int result = key.compareTo(r.getData().getName());
+            if (result == 0) {
+                // key already exists, add new multimedia item to existing data
+                r.getData().add(newItem);
+            }   
+            else if (result < 0) {
+                // if the key is smaller than the root, go left
+                if (r.getLeftChild().isLeaf()) {
+                    // if the left child is a leaf, insert new node here
+                    BSTNode newNode = new BSTNode(r, new BSTNode(), new BSTNode(), newData);
+                    newNode.getData().add(newItem);
+                    r.setLeftChild(newNode);
+                    numInternalNodes++;
+                } else {
+                    put(r.getLeftChild(), key, content, type);
+                }
+            } else {
+                // if the key is larger than the root, go right
+                if (r.getRightChild().isLeaf()) {
+                    // if the right child is a leaf, insert new node here
+                    BSTNode newNode = new BSTNode(r, new BSTNode(), new BSTNode(), newData);
+                    newNode.getData().add(newItem);
+                    r.setRightChild(newNode);
+                    numInternalNodes++;
+                } else {
+                    put(r.getRightChild(), key, content, type);
+                }
+            }
         }
+
     }
 
     /**
@@ -75,97 +104,151 @@ public class BSTOrderedDictionary implements BSTOrderedDictionaryADT {
      * @param r root node
      */
     public void remove(BSTNode r, String k) throws DictionaryException {
-        // 1. search the tree for the root with the key
-        // 2. else if the root left node is null, make the new root the right tree
-        // 3. else if the root right node is null, make the new root the left tree
-        // 4. else if (they are both not null), we will replace the root with the
-        // smallest of the right subtree (could have also done the largest of the right
-        // subtree)
-        // Note: we dont need to check if its a leaf, since if both side is null, then
-        // we will make the parent point to null
-        // 5. if it is not in the tree, throw exception
+        BSTNode p = getNode(r, k);
 
-        if (r.isLeaf()) {
+        if (p == null || p.isLeaf()) {
             throw new DictionaryException("Key not found");
-        }
-
-        int result = k.compareTo(r.getData().getName());
-
-        if (result < 0) {
-            // if the key k is smaller than the root, search left subtree
-            remove(r.getLeftChild(), k);
-        } else if (result > 0) {
-            // if the key k is larger than the root, search right subtree
-            remove(r.getRightChild(), k);
         } else {
-            BSTNode left = r.getLeftChild();
-            BSTNode right = r.getRightChild();
-            // if we found the key
-            if (left == null) {
-                // if the left is null, set right subtree to be the new root
-                r.setData(right.getData());
-                r.setRightChild(right.getRightChild());
-                r.setLeftChild(right.getLeftChild());
-                numInternalNodes--;
-            } else if (right == null) {
-                // if the right is null, set left subtree to be the new root
-                r.setData(left.getData());
-                r.setRightChild(left.getRightChild());
-                r.setLeftChild(left.getLeftChild());
-                numInternalNodes--;
-            } else {
-                // if the left and right are not null (the root is not a leaf), find the
-                // smallest in the right subtree
-                BSTNode cur = right;
-
-                // loop left until we hit the leaf
-                while (!cur.isLeaf()) {
-                    cur = cur.getLeftChild();
+            // if a child c of p is a leaf
+            if (p.getLeftChild().isLeaf() || p.getRightChild().isLeaf()) {
+                BSTNode c;
+                // let c be the non-leaf child of p
+                if (!p.getLeftChild().isLeaf()) {
+                    c = p.getLeftChild();
+                } else {
+                    c = p.getRightChild();
                 }
 
-                r.setData(cur.getData());
-                remove(r.getRightChild(), r.getData().getName());
-
+                // if parent is not null, then make c a child of p's parent instead of p
+                if (p.getParent() != null) {
+                    // determine if p is a left or right child
+                    if (p == p.getParent().getLeftChild()) {
+                        p.getParent().setLeftChild(c);
+                    } else {
+                        p.getParent().setRightChild(c);
+                    }
+                    c.setParent(p.getParent());
+                } else {
+                    // make c the root
+                    root = c;
+                    c.setParent(null);
+                }
+                numInternalNodes--;
+            } else {
+                // s is smallest right subtree of p
+                // p.setRecord to s's record
+                // remove s from the tree
+                BSTNode s = smallestNode(p.getRightChild());
+                p.setData(s.getData());
+                remove(s, s.getData().getName());
             }
-
         }
 
     }
 
+    /**
+     * removes from the tree with root r all MultimediaItem objects of the type specified by the third 
+     * parameter stored in the ArrayList of the node with key attribute key. If after removing these
+     * MultimediaItem objects the ArrayList becomes empty, the BSTNode with key attribute key 
+     * must be removed from the tree
+     * @param r root node
+     * @param k key attribute
+     * @param type type of MultimediaItem to be removed
+     * @throws DictionaryException if there is no node in the tree storing the given key
+     */
     public void remove(BSTNode r, String k, int type) throws DictionaryException {
+        BSTNode p = getNode(r, k);
+
+        if (p == null || p.isLeaf()) {
+            throw new DictionaryException("Key not found");
+        } else {
+            ArrayList<MultimediaItem> mediaList = p.getData().getMedia();
+            // remove all MultimediaItem objects of the given type
+            for (int i = mediaList.size() - 1; i >= 0; i--) {
+                if (mediaList.get(i).getType() == type) {
+                    mediaList.remove(i);
+                }
+            }
+
+            // if the media list is empty after removal, remove the node
+            if (mediaList.isEmpty()) {
+                remove(r, k);
+            }
+        }
 
     }
 
-    public Data successor(BSTNode r, String k);
-
-    public Data predecessor(BSTNode r, String k);
+    /**
+     * returns the Data objects stored in the successor of the node
+     * storing key attribute key in the tree with root r; returns null if the successor does not exist.
+     * @param r root of the tree
+     * @param k given key
+     * @return Data object storing the smallest key larger than k
+     * @return null if no such key exists
+     */
+    public Data successor(BSTNode r, String k) {
+        BSTNode p = getNode(r, k);
+        if (p == null) return null;
+        // if p is an internal node AND p has a right child thats also an internal node
+        if (!p.isLeaf() && !p.getRightChild().isLeaf()) {
+            return smallest(p.getRightChild());
+        } else {
+            p = p.getParent();
+            while (p != null && k.compareTo(p.getData().getName()) > 0) {
+                p = p.getParent();
+            }
+            if (p == null) return null;
+            return p.getData();
+        }
+    }
 
     /**
-     * returns the Data object storing the smallest key in the tree with root r;
-     * returns null if the tree is empty.
+     * returns the Data objects stored in the predecessor of the node storing key 
+     * attribute key in the tree with root r; returns null if the predecessor does not exist.
+     * @param r root of the tree
+     * @param k given key
+     * @return Data object storing the largest key smaller than k
+     * @return null if no such key exists
+     */
+    public Data predecessor(BSTNode r, String k) {
+        BSTNode p = getNode(r, k);
+        if (p == null) return null;
+        // if p is an internal node AND p has a left child thats also an internal node
+        if (!p.isLeaf() && !p.getLeftChild().isLeaf()) {
+            return largest(p.getLeftChild());
+        } else {
+            p = p.getParent();
+            while (p != null && k.compareTo(p.getData().getName()) < 0) {
+                p = p.getParent();
+            }
+            if (p == null) return null;
+            return p.getData();
+        }
+    }
+
+    /**
+     * returns the Data object storing the smallest key in the tree with root r; returns null if the tree is empty.
      *
      * @param r root of the tree
      * @return smallest returns the Data object sotring the smallest key
      * @return null if tree is empty
      */
     public Data smallest(BSTNode r) {
-
-        // check if tree is empty
-        if (r == null) {
+        // if the tree is empty
+        if (r.isLeaf()) {
             return null;
         }
 
-        // recursively call the left child since the left most is the smallest
-        // base case: if it's a leaf return the data
-        if (r.isLeaf()) {
-            return r.getData();
-        } else {
-            smallest(r.getLeftChild());
+        // go as far left as possible
+        BSTNode current = r;
+        while (!current.getLeftChild().isLeaf()) {
+            current = current.getLeftChild();
         }
 
-        // idk what this is
-        return r.getData();
+        // the smallest key is stored in this internal node
+        return current.getData();
     }
+
 
     /**
      * returns the Data object storing the largest key in the tree with root r;
@@ -177,21 +260,54 @@ public class BSTOrderedDictionary implements BSTOrderedDictionaryADT {
      */
     public Data largest(BSTNode r) {
 
-        // check if tree is empty
-        if (r == null) {
+        // if the tree is empty
+        if (r.isLeaf()) {
             return null;
         }
 
-        // recursively call the left child since the left most is the smallest
-        // base case: if it's a leaf return the data
-        if (r.isLeaf()) {
-            return r.getData();
-        } else {
-            largest(r.getRightChild());
+        // go as far right as possible
+        BSTNode current = r;
+        while (!current.getRightChild().isLeaf()) {
+            current = current.getRightChild();
         }
 
-        // idk what this is
-        return r.getData();
+        // the largest key is stored in this internal node
+        return current.getData();
     }
+
+    /** 
+     * finds in the tree with root r the BSTNode with the given key attribute key
+     * @return the BSTNode storing the given key
+     * @return null if there are no node in the tree storing the given key
+    */
+    private BSTNode getNode(BSTNode r, String key) {
+        if (r.isLeaf()) return r;
+
+        int cmp = key.compareTo(r.getData().getName());
+
+        if (cmp == 0)
+            return r;
+        else if (cmp < 0)
+            return getNode(r.getLeftChild(), key);
+        else
+            return getNode(r.getRightChild(), key);
+    }
+
+    private BSTNode smallestNode(BSTNode r) {
+        // if the tree is empty
+        if (r.isLeaf()) {
+            return null;
+        }
+
+        // go as far left as possible
+        BSTNode current = r;
+        while (!current.getLeftChild().isLeaf()) {
+            current = current.getLeftChild();
+        }
+
+        // the smallest key is stored in this internal node
+        return current;
+    }
+
 
 }
