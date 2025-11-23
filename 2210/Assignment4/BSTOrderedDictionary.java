@@ -1,3 +1,12 @@
+/* 
+This class implements an ordered dictionary using a binary search tree. In the binary search tree
+only the internal nodes will store information. 
+Student Name: Isaac Tran
+Student email: itran9@uwo.ca
+Student ID: 251446564
+Due Date: 2025-11-20
+*/
+
 import java.util.ArrayList;
 
 public class BSTOrderedDictionary implements BSTOrderedDictionaryADT {
@@ -69,7 +78,6 @@ public class BSTOrderedDictionary implements BSTOrderedDictionaryADT {
             root = newNode;
             numInternalNodes++;
         } else {
-
             int result = key.compareTo(r.getData().getName());
             if (result == 0) {
                 // key already exists, add new multimedia item to existing data

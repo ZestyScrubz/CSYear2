@@ -1,3 +1,10 @@
+/* 
+This class represents the nodes of the binary search tree implementing the ordered dictionary. 
+Student Name: Isaac Tran
+Student email: itran9@uwo.ca
+Student ID: 251446564
+Due Date: 2025-11-20
+*/
 public class BSTNode {
 
     private BSTNode parent;

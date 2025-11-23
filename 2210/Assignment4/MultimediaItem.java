@@ -1,3 +1,11 @@
+/* 
+This class represents each one of the multimedia objects stored in the arrayList of a node of the
+binary search tree
+Student Name: Isaac Tran
+Student email: itran9@uwo.ca
+Student ID: 251446564
+Due Date: 2025-11-20
+*/
 public class MultimediaItem {
     // Instance variables
     private String content;

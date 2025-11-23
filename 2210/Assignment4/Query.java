@@ -1,7 +1,18 @@
-import java.io.File;
+/* 
+This class implements a text-based application that allows the user to access the information in the
+multimedia ordered dictionary. 
+Student Name: Isaac Tran
+Student email: itran9@uwo.ca
+Student ID: 251446564
+Due Date: 2025-11-20
+*/
+
 import java.io.FileNotFoundException;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Scanner;
+
 
 public class Query {
 
@@ -11,12 +22,16 @@ public class Query {
         String result, nextCommand;
 
         StringReader keyboard = new StringReader();
+            // `StringReader` is a simple helper that prints a prompt and reads a
+            // line from stdin. We use it to interactively accept commands.
         if (args.length != 1) {
             System.out.println("Usage: java Query fileName");
             System.exit(0);
         }
 
-        Query myProgram = new Query(args[0]); // pass the filename
+        new Query(args[0]); // pass the filename
+    // Build the dictionary by reading the provided input file. The
+    // constructor performs the file parsing and populates `dictionary`.
 
         while (true) {
             String raw = keyboard.read("Enter next command: ");
@@ -35,14 +50,17 @@ public class Query {
 
     public Query(String inputFile) {
         dictionary = new BSTOrderedDictionary();
+        // build dictionary from input file
 
-        try (Scanner sc = new Scanner(new File(inputFile))) {
-            while (sc.hasNextLine()) {
-                String keyLine = sc.nextLine().trim();
-                if (!sc.hasNextLine()) break; // odd number of lines: stop
-                String contentLine = sc.nextLine().trim();
-
-                if (keyLine.isEmpty() || contentLine.isEmpty()) continue;
+        try (BufferedReader br = new BufferedReader(new FileReader(inputFile))) {
+            String keyLine;
+            while ((keyLine = br.readLine()) != null) {
+                keyLine = keyLine.trim();
+                String contentLine = br.readLine();
+                if (contentLine == null) break; // odd number of lines: stop
+                contentLine = contentLine.trim();
+                // Read the content line paired with this key. If there is no
+                // following line the pair is incomplete and we stop.
 
                 String key = keyLine.toLowerCase();
 
@@ -65,8 +83,14 @@ public class Query {
         } catch (FileNotFoundException e) {
             System.out.println("Cannot open file: " + inputFile);
             System.exit(1);
+        } catch (IOException e) {
+            System.out.println("Error reading file: " + e.getMessage());
+            System.exit(1);
         }
+        // finished building dictionary
     }
+
+    
 
     public static String processCommand(String command) {
         String[] tokens = command.trim().split("\\s+");
@@ -83,6 +107,7 @@ public class Query {
                     ArrayList<MultimediaItem> items = dictionary.get(dictionary.getRoot(), key);
                     ArrayList<String> lines = new ArrayList<>();
 
+                    // for every item in the array list we get the type and play the corresponding content based on the number
                     if (items != null && !items.isEmpty()) {
                         for (MultimediaItem item : items) {
                             try {
@@ -109,6 +134,7 @@ public class Query {
                         String s = "The word " + key + " is not in the ordered dictionary.\n";
                         Data pred = dictionary.predecessor(dictionary.getRoot(), key);
                         Data succ = dictionary.successor(dictionary.getRoot(), key);
+                        // if the predeceding word is null we will print nothing else we will print the key
                         s += "Preceding word: " + (pred != null ? pred.getName() : "") + "\n";
                         s += "Following word: " + (succ != null ? succ.getName() : "");
                         return s;
