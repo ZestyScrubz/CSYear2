@@ -94,7 +94,7 @@ int newDriver(void) {
     // prompt the user for the driver vehicleColour (re-prompt until a valid number in [0,10])
     while (1) {
         char buf[128];
-        printf("Enter driver vehicle colour: ");
+        printf("Enter driver vehicleColour: ");
         if (!fgets(buf, sizeof(buf), stdin)) return 1;
         if (sscanf(buf, "%d", &vehicleColour) != 1) { printf("Invalid vehicle colour. Please enter a number between 0 and 10.\n"); continue; }
         if (vehicleColour < 0.0f || vehicleColour > 10.0f) { printf("vehicle colour must be between 0 and 10.\n"); continue; }
