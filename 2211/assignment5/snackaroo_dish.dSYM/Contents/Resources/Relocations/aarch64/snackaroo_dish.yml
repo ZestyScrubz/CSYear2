@@ -1,0 +1,5 @@
+---
+triple:          'arm64-apple-darwin'
+binary-path:     '/Users/isaac/Documents/GitHub/CSYear2/2211/assignment5/snackaroo_dish'
+relocations:     []
+...
